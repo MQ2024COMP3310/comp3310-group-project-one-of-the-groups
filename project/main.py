@@ -3,6 +3,7 @@ from flask import (
   flash, redirect, url_for, send_from_directory, 
   current_app, make_response
 )
+from flask_login import login_user, login_required, logout_user
 from .models import Photo
 from sqlalchemy import asc, text
 from . import db
@@ -22,7 +23,9 @@ def display_file(name):
 
 # Upload a new photo
 @main.route('/upload/', methods=['GET','POST'])
-def newPhoto():
+# Login required
+@login_required
+def new_photo():
   if request.method == 'POST':
     file = None
     if "fileToUpload" in request.files:
@@ -50,7 +53,15 @@ def newPhoto():
 
 # This is called when clicking on Edit. Goes to the edit page.
 @main.route('/photo/<int:photo_id>/edit/', methods = ['GET', 'POST'])
-def editPhoto(photo_id):
+@login_required
+def edit_photo(photo_id):
+  # TODO: If logged-in user's name is not the same as the 
+  # name of the photo's owner, then return them to the 
+  # main page
+
+  #TODO: If photo_id is out of range of the db, return them
+  # to the main page instead of displaying an SQLAlchemy error
+
   editedPhoto = db.session.query(Photo).filter_by(id = photo_id).one()
   if request.method == 'POST':
     if request.form['user']:
@@ -67,7 +78,17 @@ def editPhoto(photo_id):
 
 # This is called when clicking on Delete. 
 @main.route('/photo/<int:photo_id>/delete/', methods = ['GET','POST'])
+@login_required
 def deletePhoto(photo_id):
+  #TODO: If the user's name does not match the name of the requested
+  # photo's owner, return them to the main page
+
+
+  #TODO: If photo_id is out of range of the db, return them
+  # to the main page instead of displaying an SQLAlchemy error
+
+
+
   fileResults = db.session.execute(text('select file from photo where id = ' + str(photo_id)))
   filename = fileResults.first()[0]
   filepath = os.path.join(current_app.config["UPLOAD_DIR"], filename)
@@ -78,3 +99,8 @@ def deletePhoto(photo_id):
   flash('Photo id %s Successfully Deleted' % photo_id)
   return redirect(url_for('main.homepage'))
 
+@main.route('/user')
+@login_required
+def user_page():
+  #TODO: Should return user's homepage (and not another user's)
+  return render_template('user_home.html')
