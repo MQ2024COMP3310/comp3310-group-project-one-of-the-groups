@@ -16,7 +16,7 @@
 
 <div id="filter" class="filter-container">
   <div id="upload">
-    <a href="{{ url_for('main.newPhoto') }}">Upload a photo</a>
+    <a href="{{ url_for('main.new_photo') }}">Upload a photo</a>
   </div>
 </div>
 
@@ -38,6 +38,17 @@
                 <div class="image-description overflow-ellipsis" title="{{photo.description}}">
                     {{photo.description}}
                 </div>
+
+                <!--
+                    <div>
+                        {{photo.likes}}
+                        // User should be able to click on this to add their like to the photo. User
+                        // must be logged in first in order to add a like, and they can only like
+                        // a photo once. Clicking on the like will toggle like/unliked status
+
+                        // Code stub for this section in main.py
+                    </div>
+                -->
             </div>
 
             <div class="image-navigation-container">
@@ -47,7 +58,7 @@
                     </div>
                 </a>
 
-                <a href="{{ url_for('main.editPhoto', photo_id=photo.id) }}" title="Edit this photo">
+                <a href="{{ url_for('main.edit_photo', photo_id=photo.id) }}" title="Edit this photo">
                     <div class="icon-container highlight green">
                         <img src="{{ url_for('static', filename='icons/edit.png') }}" alt="edit">
                     </div>

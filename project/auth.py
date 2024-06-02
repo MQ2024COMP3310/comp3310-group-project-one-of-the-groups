@@ -51,9 +51,14 @@ def login_post():
 @auth.route('/signup', methods=["POST"])
 def signup_post():
     # Signup with email, username, password(min. 12 chars, alphanumeric, 1+ special characters)
+    # Values shall be taken from the signup form; code stubs below
     email = "test@email.com"
     username = "testUser123"
     password = "testtest1234!@#"
+
+    # Sanitise email, username, password values to remove any potential SQL injection commands.
+    # If SQL injection is detected, return the user to the signup page with a generic
+    # "failed to signup" error message
 
     # email check, ideally using 2FA ("We sent you a confirmation email" etc)
     if not re.match('.*@.*\.com', email):
@@ -76,7 +81,7 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    flash("Please log in with your new account")
+    flash("Signup successful, please log in with your new account")
 
     return redirect(url_for('main.index'))
 
@@ -94,4 +99,4 @@ def logout():
 def admin():
     #TODO: Show admin page if the user's role is 'admin', else
     # redirect them to the main page
-
+    return

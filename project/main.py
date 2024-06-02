@@ -99,8 +99,29 @@ def deletePhoto(photo_id):
   flash('Photo id %s Successfully Deleted' % photo_id)
   return redirect(url_for('main.homepage'))
 
+
+#------------------------------------------------------------------------------------------------------
+# Added features
+
 @main.route('/user')
 @login_required
 def user_page():
   #TODO: Should return user's homepage (and not another user's)
   return render_template('user_home.html')
+
+@main.route('/search')
+def search_page():
+  return render_template('search.html')
+
+@main.route('/like', methods = ['GET'])
+@login_required
+def likes(photo_id, user_id):
+  # If user has not liked the photo, add it to the 'likes' ENUM variable in `users.db` AND 
+  #   increment the `likes` variable for the photo in `photos.db`
+  # Else remove the photo id from the `likes` variable
+
+  # This code stub should have a timeout feature (30 seconds) to prevent spam:
+  #   attempting to add/remove a like within this period should return
+  #   a timeout message: "Try again in a short while"
+
+  return
